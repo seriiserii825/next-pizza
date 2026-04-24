@@ -1,28 +1,11 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { site_config } from "@/config/site.config";
 
 export default function Header() {
-  interface IMenuItem {
-    name: string;
-    url: string;
-  }
   const pathname = usePathname();
-  const menu_items: IMenuItem[] = [
-    {
-      name: "Home",
-      url: "/",
-    },
-    {
-      name: "About",
-      url: "/about",
-    },
-    {
-      name: "Contacts",
-      url: "/contacts",
-    },
-  ];
-  const menu_links = menu_items.map((item) => {
+  const menu_links = site_config.menu_items.map((item) => {
     const is_active = pathname === item.url;
     const default_classes = "text-sm font-semibold";
     const active_classes = "text-orange-900";

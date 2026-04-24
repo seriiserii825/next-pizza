@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/UI/Header";
 import Footer from "@/components/UI/Footer";
+import { site_config } from "@/config/site.config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "My Pizza App",
-  description: "A delicious pizza ordering app built with Next.js and Tailwind CSS.",
+  title: site_config.title,
+  description: site_config.description,
 };
 
 export default function RootLayout({
