@@ -1,10 +1,13 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   interface IMenuItem {
     name: string;
     url: string;
   }
+  const pathname = usePathname();
   const menu_items: IMenuItem[] = [
     {
       name: "Home",
@@ -19,11 +22,17 @@ export default function Header() {
       url: "/contacts",
     },
   ];
-  const menu_links = menu_items.map((item) => (
-    <Link key={item.name} href={item.url} className="font-medium hover:text-orange-700">
-      {item.name}
-    </Link>
-  ));
+  const menu_links = menu_items.map((item) => {
+    const is_active = pathname === item.url;
+    const default_classes = "text-sm font-semibold";
+    const active_classes = "text-orange-900";
+    const current_classes = is_active ? active_classes : "text-stone-700 hover:text-orange-700";
+    return (
+      <Link key={item.url} href={item.url} className={`${default_classes} ${current_classes}`}>
+        {item.name}
+      </Link>
+    );
+  });
   return (
     <header className="border-b border-orange-200 bg-amber-100">
       <div className="flex items-center justify-between max-w-6xl px-6 py-4 mx-auto">
