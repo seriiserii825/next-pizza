@@ -1,25 +1,48 @@
 "use client";
 
+import Button from "@/components/UI/Button";
 import InputField from "@/components/UI/InputField";
-import { useState } from "react";
+import { useFormState } from "@/hooks/useFormState";
+import { z } from "zod";
+
+const registerSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Enter a valid email"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(1, "Confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const { formData, errors, handleChange, validate } = useFormState<RegisterFormData>(
+    { name: "", email: "", password: "", confirmPassword: "" },
+    registerSchema,
+  );
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = validate();
+    if (!data) return;
+    console.log("Valid data:", data);
+  };
+
   return (
     <div className="p-8 bg-white shadow-2xl rounded-3xl shadow-orange-100/80">
-      <form className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <InputField
           id="name"
           label="Full name"
           type="text"
           placeholder="John Doe"
           value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          onChange={handleChange("name")}
+          error={errors.name}
           autoComplete="off"
         />
 
@@ -29,7 +52,8 @@ export default function RegisterForm() {
           type="email"
           placeholder="test@mail.com"
           value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          onChange={handleChange("email")}
+          error={errors.email}
           autoComplete="new-email"
         />
 
@@ -39,7 +63,8 @@ export default function RegisterForm() {
           type="password"
           placeholder="••••••••"
           value={formData.password}
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+          onChange={handleChange("password")}
+          error={errors.password}
           autoComplete="new-password"
         />
 
@@ -49,16 +74,12 @@ export default function RegisterForm() {
           type="password"
           placeholder="••••••••"
           value={formData.confirmPassword}
-          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+          onChange={handleChange("confirmPassword")}
+          error={errors.confirmPassword}
           autoComplete="new-password"
         />
 
-        <button
-          type="submit"
-          className="w-full py-3 font-semibold text-white bg-orange-600 rounded-xl hover:bg-orange-700 active:scale-[0.98] transition-all shadow-lg shadow-orange-200"
-        >
-          Create account
-        </button>
+        <Button type="submit">Create account</Button>
       </form>
 
       <p className="mt-6 text-sm text-center text-stone-500">
