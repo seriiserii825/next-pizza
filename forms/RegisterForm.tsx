@@ -2,6 +2,7 @@
 
 import Button from "@/components/UI/Button";
 import InputField from "@/components/UI/InputField";
+import { registerUser } from "@/actions/auth";
 import { useFormState } from "@/hooks/useFormState";
 import { z } from "zod";
 
@@ -25,11 +26,17 @@ export default function RegisterForm() {
     registerSchema,
   );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = validate();
     if (!data) return;
     console.log("Valid data:", data);
+    const result = await registerUser({ name: data.name, email: data.email, password: data.password });
+    if (result.error) {
+      console.error(result.error);
+    } else {
+      console.log("User created:", result.userId);
+    }
   };
 
   return (
