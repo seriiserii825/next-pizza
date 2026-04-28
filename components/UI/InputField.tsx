@@ -9,6 +9,7 @@ type InputFieldProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   required?: boolean;
+  autoComplete?: string;
 };
 
 function EyeIcon({ visible }: { visible: boolean }) {
@@ -36,6 +37,7 @@ export default function InputField({
   onChange,
   error,
   required = false,
+  autoComplete,
 }: InputFieldProps) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -56,6 +58,7 @@ export default function InputField({
           value={value}
           onChange={onChange}
           required={required}
+          autoComplete={autoComplete}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
           className={`w-full px-4 py-3 text-sm border outline-none rounded-xl transition
