@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "@/components/UI/Header";
 import Footer from "@/components/UI/Footer";
 import { site_config } from "@/config/site.config";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,17 +22,20 @@ export const metadata: Metadata = {
   description: site_config.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex flex-col min-h-screen bg-orange-50 text-stone-900">
-        <Header />
-        {children}
-        <Footer />
+        <SessionProvider session={session}>
+          <Header />
+          {children}
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   );
