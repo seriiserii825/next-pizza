@@ -3,9 +3,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site_config } from "@/config/site.config";
 import signOutFunc from "@/actions/sign-out";
+import { useSession } from "next-auth/react";
 
 export default function Header() {
   const pathname = usePathname();
+
+  const { data, status } = useSession();
+
   const menu_links = site_config.menu_items.map((item) => {
     const is_active = pathname === item.url;
     const default_classes = "text-sm font-semibold";
