@@ -9,7 +9,18 @@ import { getUserFromDb } from "./utils/user";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 60 * 60 }, // 1 day
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
+      }
+      return token;
+    },
+  },
   providers: [
     Credentials({
       // You can specify which fields should be submitted, by adding keys to the `credentials` object.

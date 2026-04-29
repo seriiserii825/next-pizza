@@ -8,7 +8,9 @@ import { useSession } from "next-auth/react";
 export default function Header() {
   const pathname = usePathname();
 
-  const { data, status } = useSession();
+  const { data: session, status } = useSession();
+  console.log(session, "session");
+  console.log(status, "status");
 
   const menu_links = site_config.menu_items.map((item) => {
     const is_active = pathname === item.url;
