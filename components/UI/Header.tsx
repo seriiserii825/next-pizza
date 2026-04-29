@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site_config } from "@/config/site.config";
+import signOutFunc from "@/actions/sign-out";
 
 export default function Header() {
   const pathname = usePathname();
@@ -16,6 +17,9 @@ export default function Header() {
       </Link>
     );
   });
+  async function signOutHandler() {
+    await signOutFunc();
+  }
   return (
     <header className="border-b border-orange-200 bg-amber-100">
       <div className="flex items-center justify-between max-w-6xl px-6 py-4 mx-auto">
@@ -38,6 +42,12 @@ export default function Header() {
           >
             Sign Up
           </Link>
+          <button
+            className="px-4 py-2 text-sm font-semibold text-white bg-red-800 rounded-xl"
+            onClick={signOutHandler}
+          >
+            Sign Out
+          </button>
         </div>
       </div>
     </header>
