@@ -49,7 +49,7 @@ export default function Header() {
             Sign Up
           </Link>
           <button
-            className="px-4 py-2 text-sm font-semibold text-white bg-red-800 rounded-xl"
+            className="px-4 py-2 text-sm font-semibold cursor-pointer text-white bg-red-800 rounded-xl"
             onClick={signOutHandler}
           >
             Sign Out
