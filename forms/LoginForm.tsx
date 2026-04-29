@@ -1,5 +1,6 @@
 "use client";
 
+import signInWithCredentials from "@/actions/sign-in";
 import Button from "@/components/UI/Button";
 import InputField from "@/components/UI/InputField";
 import { useFormState } from "@/hooks/useFormState";
@@ -18,11 +19,16 @@ export default function LoginForm() {
     loginSchema,
   );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = validate();
     if (!data) return;
-    console.log("Valid data:", data);
+    try {
+      const result = await signInWithCredentials(data.email, data.password);
+      console.log(result, "result");
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   return (

@@ -30,7 +30,6 @@ export default function RegisterForm() {
     e.preventDefault();
     const data = validate();
     if (!data) return;
-    console.log("Valid data:", data);
     const result = await registerUser({
       name: data.name,
       email: data.email,
