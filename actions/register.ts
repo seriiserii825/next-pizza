@@ -11,6 +11,11 @@ export async function registerUser(data: { name: string; email: string; password
 
   const hashedPassword = await saltAndHashPassword(data.password);
 
+  const existingUser = await prisma.user.findUnique({ where: { email: data.email } });
+  if (existingUser) {
+    return { error: "Email already in use" };
+  }
+
   const user = await prisma.user.create({
     data: {
       name: data.name,
